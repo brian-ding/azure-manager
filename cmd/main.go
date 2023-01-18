@@ -12,6 +12,7 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.POST("/refresh", refreship.RefreshIP)
+	r.POST("/refresh", refreship.RefreshHandler)
+	r.GET("/refresh/:id", refreship.CheckHandler)
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
