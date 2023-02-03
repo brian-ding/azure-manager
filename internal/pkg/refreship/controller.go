@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/brian-ding/azure-manager/internal/pkg/mgr"
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,7 @@ import (
 var record *Record
 
 func RefreshHandler(c *gin.Context) {
-	var req RefreshRequest
+	req := buildReq()
 
 	if c.BindJSON(&req) != nil {
 		return
@@ -115,4 +116,15 @@ func refresh(subsId, itfGrNm, itfResNm, ipGrNm, ipResNm string) {
 	newAddr := *ip.Properties.IPAddress
 	record.Status = succeed
 	record.Message = fmt.Sprintf("old ip address: %s, new ip address: %s", oldAddr, newAddr)
+}
+
+func buildReq() RefreshRequest {
+	req := RefreshRequest{}
+	req.SubsId = os.Getenv("AZURE_SUBSCRIPTION_ID")
+	req.ItfGrNm = os.Getenv("AZURE_INTERFACE_GROUP_NAME")
+	req.ItfResNm = os.Getenv("AZURE_INTERFACE_RESOURCE_NAME")
+	req.IpGrNm = os.Getenv("AZURE_IP_GROUP_NAME")
+	req.IpResNm = os.Getenv("AZURE_IP_RESOURCE_NAME")
+
+	return req
 }
