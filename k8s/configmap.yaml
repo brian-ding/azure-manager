@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: azure-config
+data:
+  azure_interface_group_name: "vpn"
+  azure_interface_resource_name: "vpn-us566"
+  azure_ip_group_name: "vpn"
+  azure_ip_resource_name: "vpn-us-ip-backup"

@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-manager
+  labels:
+    app: azure-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-manager
+  template:
+    metadata:
+      labels:
+        app: azure-manager
+    spec:
+      containers:
+      - name: azure-manager
+        image: sobrian/azure-manager:v0.1.1
+        ports:
+        - containerPort: 8080
+        env:
+          - name: AZURE_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: mysecret
+                key: azure_client_id
+          - name: AZURE_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: mysecret
+                key: azure_tenant_id
+          - name: AZURE_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: mysecret
+                key: azure_client_secret
+          - name: AZURE_SUBSCRIPTION_ID
+            valueFrom:
+              secretKeyRef:
+                name: mysecret
+                key: azure_subscription_id
+          - name: AZURE_INTERFACE_GROUP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: azure-config
+                key: azure_interface_group_name
+          - name: AZURE_INTERFACE_RESOURCE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: azure-config
+                key: azure_interface_resource_name
+          - name: AZURE_IP_GROUP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: azure-config
+                key: azure_ip_group_name
+          - name: AZURE_IP_RESOURCE_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: azure-config
+                key: azure_ip_resource_name
